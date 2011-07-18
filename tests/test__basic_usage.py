@@ -1,5 +1,6 @@
 import unittest
 from infi.conf import Config
+from infi.conf import exceptions
 
 class BasicUsageTest(unittest.TestCase):
     def setUp(self):
@@ -22,3 +23,39 @@ class BasicUsageTest(unittest.TestCase):
             self.conf.root.a.c
     def test__keys(self):
         self.assertItemsEqual(self.conf.keys(), ['a'])
+
+
+class LinkedConfigurationTest(unittest.TestCase):
+    def setUp(self):
+        super(LinkedConfigurationTest, self).setUp()
+        self.conf1 = Config(dict(a=1))
+        self.conf2 = Config(dict(c=2))
+        self.conf1['b'] = self.conf2
+    def test__linked_configurations(self):
+        self.assertIs(self.conf1['b'], self.conf2)
+    def test__linked_backup_and_restore(self):
+        self.conf1.backup()
+        self.conf2['c'] = 3
+        self.assertEquals(self.conf1.root.b.c, 3)
+        self.conf1['a'] = 2
+        self.conf1.restore()
+        self.assertEquals(self.conf1.root.b.c, 2)
+    def test__linked_backups_restore_parent_then_child(self):
+        self.conf2.backup()
+        self.conf1.backup()
+        self.conf2['c'] = 4
+        self.assertEquals(self.conf2.root.c, 4)
+        self.conf1.restore()
+        self.assertEquals(self.conf2.root.c, 2)
+        self.conf2['c'] = 5
+        self.assertEquals(self.conf2.root.c, 5)
+        self.conf2.restore()
+        self.assertEquals(self.conf2.root.c, 2)
+
+class BackupTest(unittest.TestCase):
+    def setUp(self):
+        super(BackupTest, self).setUp()
+        self.conf = Config(dict(a=1, b=2))
+    def test__restore_no_backup(self):
+        with self.assertRaises(exceptions.NoBackup):
+            self.conf.restore()
