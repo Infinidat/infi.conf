@@ -20,7 +20,7 @@ setup(name="infi.conf",
       url="https://github.com/vmalloc/infi.conf",
       version=__version__,
       packages=find_packages(exclude=["tests"]),
-      install_requires=[],
+      install_requires=["sentinels"],
       scripts=[],
       namespace_packages=["infi",]
       )

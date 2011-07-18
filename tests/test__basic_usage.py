@@ -12,7 +12,11 @@ class BasicUsageTest(unittest.TestCase):
     def test__getting(self):
         self.assertEquals(self.conf.root.a.b, 2)
     def test__getting_through_getitem(self):
-        self.assertEquals(self.conf['a'], {'b' : 2})
+        self.assertIsInstance(self.conf['a'], Config)
+    def test__setting_new_values(self):
+        self.conf['c'] = Config(2)
+        self.assertEquals(self.conf.root.c, 2)
+        self.assertEquals(self.conf['c'], 2)
     def test__item_not_found(self):
         with self.assertRaises(LookupError):
             self.conf.root.a.c

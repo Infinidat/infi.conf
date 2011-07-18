@@ -50,7 +50,7 @@ Setting paths that didn't exist before is not allowed, unless you assign a confi
  >>> c['b'] = 3 #doctest: +IGNORE_EXCEPTION_DETAIL
  Traceback (most recent call last):
   ...
- AttributeError: Cannot set attribute 'b'
+ CannotSetValue: Cannot set key 'b'
 
  >>> c['b'] = Config(2)
  >>> c.root.b

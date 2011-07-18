@@ -1,5 +1,6 @@
 import copy
 from sentinels import NOTHING
+from . import exceptions
 
 class Config(object):
     _backups = None
@@ -9,11 +10,19 @@ class Config(object):
         self.root = ConfigProxy(self)
     def __getitem__(self, item):
         returned = self._value[item]
+        if isinstance(returned, dict):
+            return Config(returned)
         return returned
+    def get(self, key, default=None):
+        return self._value.get(key, default)
     def __setitem__(self, item, value):
-        if item not in self._value and not isinstance(value, Config):
-            raise AttributeError("Cannot set attribute {!r}".format(item))
+        if not self._can_set_item(item, value):
+            raise exceptions.CannotSetValue("Cannot set key {0!r}".format(item))
+        if isinstance(value, Config):
+            value = value._value
         self._value[item] = value
+    def _can_set_item(self, item, value):
+        return item in self._value or isinstance(value, Config)
     def keys(self):
         return self._value.keys()
     @classmethod
