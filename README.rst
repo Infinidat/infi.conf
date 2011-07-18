@@ -79,3 +79,37 @@ Whenever you want to preserve the configuration prior to a change and restore it
  >>> c['value']
  2
 
+Utilities
+=========
+
+Path Assignment
++++++++++++++++
+
+It is possible to assign to a config via path assignment, e.g::
+
+ >>> c = Config(dict(a=dict(b=dict(c=3))))
+ >>> from infi.conf.utils import assign_path
+ >>> assign_path(c, "a.b.c", 4)
+ >>> c.root.a.b.c
+ 4
+
+Expression Path Assignment
+++++++++++++++++++++++++++
+
+In some cases you would like to receive strings like this::
+
+ a.b.c=2
+
+And make sense of them in the context of the configuration. This might be because they originate from command line, overlay files, or whatever other source comes to mind. *infi.conf*'s utilities provide a function for this::
+
+ >>> from infi.conf.utils import assign_path_expression
+ >>> assign_path_expression(c, "a.b.c=2")
+ >>> c.root.a.b.c
+ '2'
+
+Note that in this method, types are always strings. If your leaf already has a value, the *deduce_type* flag can be used to deduce the type from the current value::
+
+ >>> c['a']['b']['c'] = 3
+ >>> assign_path_expression(c, 'a.b.c=666', deduce_type=True)
+ >>> c.root.a.b.c
+ 666
