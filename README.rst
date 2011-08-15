@@ -1,6 +1,5 @@
 Overview
 --------
-
 infi.conf is a generic mechanism for storing, loading and manipulating configuration.
 
 Usage

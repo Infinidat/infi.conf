@@ -4,8 +4,11 @@ from .exceptions import InvalidPath
 from .exceptions import CannotDeduceType
 
 def assign_path(conf, path, value):
-    path, key = path.rsplit(".", 1)
-    conf = get_path(conf, path)
+    if '.' in path:
+        path, key = path.rsplit(".", 1)
+        conf = get_path(conf, path)
+    else:
+        key = path
     conf[key] = value
 
 def assign_path_expression(conf, expr, deduce_type=False):
