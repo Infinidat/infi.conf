@@ -12,6 +12,14 @@ class BasicUsageTest(unittest.TestCase):
             ))
     def test__getting(self):
         self.assertEquals(self.conf.root.a.b, 2)
+    def test__setting(self):
+        self.conf.root.a.b = 3
+        self.assertEquals(self.conf.root.a.b, 3)
+    def test__setting_nonexistent_paths(self):
+        with self.assertRaises(exceptions.CannotSetValue):
+            self.conf['a']['c'] = 4
+        with self.assertRaises(AttributeError):
+            self.conf.root.a.c = 4
     def test__getting_through_getitem(self):
         self.assertIsInstance(self.conf['a'], Config)
     def test__setting_new_values(self):

@@ -56,6 +56,12 @@ Setting paths that didn't exist before is not allowed, unless you assign a confi
  >>> c.root.b
  2
 
+Assigning can also be done via the *root* proxy::
+
+ >>> c.root.a = 3
+ >>> c.root.a
+ 3
+
 Backing Up/Restoring
 ====================
 

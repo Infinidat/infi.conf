@@ -60,11 +60,19 @@ class ConfigProxy(object):
     def __init__(self, conf):
         super(ConfigProxy, self).__init__()
         self._conf = conf
+    def __setattr__(self, attr, value):
+        if attr.startswith("_"):
+            return super(ConfigProxy, self).__setattr__(attr, value)
+        assert isinstance(self._conf, Config)
+        try:
+            self._conf[attr] = value
+        except exceptions.CannotSetValue:
+            raise AttributeError(attr)
     def __getattr__(self, attr):
         value = self._conf[attr]
-        if isinstance(value, Config):
-            value = value._value
         if isinstance(value, dict):
+            value = Config(value)
+        if isinstance(value, Config):
             return ConfigProxy(value)
         return value
 
