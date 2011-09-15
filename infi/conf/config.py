@@ -1,6 +1,7 @@
 import copy
 from sentinels import NOTHING
 from . import exceptions
+from .python3_compat import iteritems
 
 class Config(object):
     _backups = None
@@ -45,7 +46,7 @@ class Config(object):
             namespace = {}
         else:
             namespace = dict(namespace)
-        exec s in namespace
+        exec(s, namespace)
         return cls(namespace['CONFIG'])
     def backup(self):
         if self._backups is None:
@@ -92,7 +93,7 @@ def _set_state(config, state):
     assert isinstance(config, Config)
     for key in set(config.keys()) - set(state):
         config.pop(key)
-    for key, value in state.iteritems():
+    for key, value in iteritems(state):
         if isinstance(value, dict):
             _set_state(config[key], value)
         else:

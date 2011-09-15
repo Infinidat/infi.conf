@@ -10,8 +10,8 @@ Basics
 
 Given a file like this::
 
- >>> f = open("/tmp/my_file.cfg", "wb")
- >>> f.write("""
+ >>> f = open("/tmp/my_file.cfg", "w")
+ >>> _ = f.write("""
  ... CONFIG = {
  ...    "a" : {
  ...       "b" : 2,

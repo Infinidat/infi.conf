@@ -1,8 +1,8 @@
-import unittest
+from .test_utils import TestCase
 from infi.conf import Config
 from infi.conf import exceptions
 
-class BasicUsageTest(unittest.TestCase):
+class BasicUsageTest(TestCase):
     def setUp(self):
         super(BasicUsageTest, self).setUp()
         self.conf = Config(dict(
@@ -30,10 +30,10 @@ class BasicUsageTest(unittest.TestCase):
         with self.assertRaises(LookupError):
             self.conf.root.a.c
     def test__keys(self):
-        self.assertItemsEqual(self.conf.keys(), ['a'])
+        self.assertEquals(set(self.conf.keys()), set(['a']))
 
 
-class LinkedConfigurationTest(unittest.TestCase):
+class LinkedConfigurationTest(TestCase):
     def setUp(self):
         super(LinkedConfigurationTest, self).setUp()
         self.conf1 = Config(dict(a=1))
@@ -60,7 +60,7 @@ class LinkedConfigurationTest(unittest.TestCase):
         self.conf2.restore()
         self.assertEquals(self.conf2.root.c, 2)
 
-class BackupTest(unittest.TestCase):
+class BackupTest(TestCase):
     def setUp(self):
         super(BackupTest, self).setUp()
         self.conf = Config(dict(a=1, b=2))

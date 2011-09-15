@@ -1,9 +1,9 @@
-import unittest
+from .test_utils import TestCase
 from infi.conf import Config
 from infi.conf import utils
 from infi.conf import exceptions
 
-class PathAssignmentTest(unittest.TestCase):
+class PathAssignmentTest(TestCase):
     def setUp(self):
         super(PathAssignmentTest, self).setUp()
         self.conf = Config(dict(a=dict(b=dict(c=3)), d=4))
