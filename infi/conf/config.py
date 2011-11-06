@@ -22,6 +22,8 @@ class Config(object):
         return returned
     def get(self, key, default=None):
         return self._value.get(key, default)
+    def pop(self, key):
+        return self._value.pop(key)
     def __setitem__(self, item, value):
         if not self._can_set_item(item, value):
             raise exceptions.CannotSetValue("Cannot set key {0!r}".format(item))
