@@ -15,6 +15,10 @@ class BasicUsageTest(TestCase):
     def test__setting(self):
         self.conf.root.a.b = 3
         self.assertEquals(self.conf.root.a.b, 3)
+    def test__pop(self):
+        self.assertEquals(list(self.conf['a'].keys()), ['b'])
+        self.conf['a'].pop('b')
+        self.assertEquals(list(self.conf['a'].keys()), [])
     def test__setting_nonexistent_paths(self):
         with self.assertRaises(exceptions.CannotSetValue):
             self.conf['a']['c'] = 4
