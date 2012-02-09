@@ -58,6 +58,8 @@ class Config(object):
         if not self._backups:
             raise exceptions.NoBackup()
         _set_state(self, self._backups.pop())
+    def serialize_to_dict(self):
+        return _get_state(self)
 
 class ConfigProxy(object):
     def __init__(self, conf):

@@ -30,6 +30,15 @@ class BasicUsageTest(TestCase):
         self.conf['c'] = Config(2)
         self.assertEquals(self.conf.root.c, 2)
         self.assertEquals(self.conf['c'], 2)
+    def test__setting_new_substructure(self):
+        self.conf['c'] = Config(dict(
+            a=dict(
+                b=True
+                )
+            ))
+        self.assertTrue(self.conf.root.c.a.b)
+        self.conf.root.c.a.b = False
+        self.assertFalse(self.conf.root.c.a.b)
     def test__item_not_found(self):
         with self.assertRaises(LookupError):
             self.conf.root.a.c
@@ -71,3 +80,20 @@ class BackupTest(TestCase):
     def test__restore_no_backup(self):
         with self.assertRaises(exceptions.NoBackup):
             self.conf.restore()
+
+class SerializationTest(TestCase):
+    def setUp(self):
+        super(SerializationTest, self).setUp()
+        self.dict = dict(
+            a = dict(
+                b = dict(
+                    c = 8
+                    )
+                )
+            )
+        self.conf = Config(self.dict)
+    def test__serialization(self):
+        result = self.conf.serialize_to_dict()
+        self.assertIsNot(result, self.dict)
+        self.assertEquals(result, self.dict)
+        self.assertIsNot(result['a'], self.dict['a'])
