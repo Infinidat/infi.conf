@@ -25,6 +25,19 @@ class PathAssignmentTest(TestCase):
         self.assertIsNone(self.conf.root.a.b.c)
         with self.assertRaises(exceptions.CannotDeduceType):
             utils.assign_path_expression(self.conf, 'a.b.c=2', deduce_type=True)
+    def test__path_deducing_with_booleans(self):
+        for false_literal in ('false', 'False', 'no', 'n', 'No', 'N'):
+            self.conf['a']['b']['c'] = True
+            utils.assign_path_expression(self.conf, 'a.b.c={}'.format(false_literal), deduce_type=True)
+            self.assertFalse(self.conf.root.a.b.c)
+        for true_literal in ('true', 'True', 'yes', 'y', 'Yes', 'Y'):
+            self.conf['a']['b']['c'] = False
+            utils.assign_path_expression(self.conf, 'a.b.c={}'.format(true_literal), deduce_type=True)
+            self.assertTrue(self.conf.root.a.b.c)
+        for invalid_literal in ('trueee', 0, 23, 2.3):
+            with self.assertRaises(ValueError):
+                utils.assign_path_expression(self.conf, 'a.b.c={}'.format(invalid_literal), deduce_type=True)
+
     def test__assign_path_direct(self):
         utils.assign_path(self.conf, 'd', 5)
         self.assertEquals(self.conf['d'], 5)
