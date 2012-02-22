@@ -1,5 +1,6 @@
 from .test_utils import TestCase
 from infi.conf import Config
+from infi.conf import get_config_object_from_proxy
 from infi.conf import exceptions
 
 class BasicUsageTest(TestCase):
@@ -15,6 +16,8 @@ class BasicUsageTest(TestCase):
     def test__setting(self):
         self.conf.root.a.b = 3
         self.assertEquals(self.conf.root.a.b, 3)
+    def test__get_conf_from_proxy(self):
+        self.assertIs(get_config_object_from_proxy(self.conf.root), self.conf)
     def test__pop(self):
         self.assertEquals(list(self.conf['a'].keys()), ['b'])
         self.conf['a'].pop('b')

@@ -37,7 +37,6 @@ class PathAssignmentTest(TestCase):
         for invalid_literal in ('trueee', 0, 23, 2.3):
             with self.assertRaises(ValueError):
                 utils.assign_path_expression(self.conf, 'a.b.c={}'.format(invalid_literal), deduce_type=True)
-
     def test__assign_path_direct(self):
         utils.assign_path(self.conf, 'd', 5)
         self.assertEquals(self.conf['d'], 5)

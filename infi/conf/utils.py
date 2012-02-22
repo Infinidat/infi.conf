@@ -40,3 +40,6 @@ def get_path(conf, path):
             raise InvalidPath("Invalid path: {0!r}".format(path))
         returned = returned[p]
     return returned
+
+def get_config_object_from_proxy(proxy):
+    return proxy._conf
