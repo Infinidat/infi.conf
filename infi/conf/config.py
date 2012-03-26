@@ -65,6 +65,8 @@ class ConfigProxy(object):
     def __init__(self, conf):
         super(ConfigProxy, self).__init__()
         self._conf = conf
+    def __dir__(self):
+        return list(self._conf.keys())
     def __setattr__(self, attr, value):
         if attr.startswith("_"):
             return super(ConfigProxy, self).__setattr__(attr, value)
