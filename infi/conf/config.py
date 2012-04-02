@@ -7,6 +7,8 @@ class Config(object):
     _backups = None
     def __init__(self, value=None):
         super(Config, self).__init__()
+        if value is None:
+            value = {}
         self._value = value
         self.root = ConfigProxy(self)
     def is_leaf(self):
