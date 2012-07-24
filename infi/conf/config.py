@@ -22,6 +22,8 @@ class Config(object):
         if isinstance(returned, dict):
             return Config(returned)
         return returned
+    def __contains__(self, key):
+        return self.get(key, NOTHING) is not NOTHING
     def get(self, key, default=None):
         return self._value.get(key, default)
     def pop(self, key):

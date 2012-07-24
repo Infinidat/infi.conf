@@ -32,6 +32,11 @@ class BasicUsageTest(TestCase):
             self.conf.root.a.c = 4
     def test__getting_through_getitem(self):
         self.assertIsInstance(self.conf['a'], Config)
+    def test__contains(self):
+        self.assertTrue("a" in self.conf)
+        self.assertFalse("b" in self.conf)
+        self.assertFalse("c" in self.conf["a"])
+        self.assertTrue("b" in self.conf["a"])
     def test__setting_new_values(self):
         self.conf['c'] = Config(2)
         self.assertEquals(self.conf.root.c, 2)
