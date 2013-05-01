@@ -21,6 +21,8 @@ class BasicUsageTest(TestCase):
     def test__proxy_dir(self):
         self.assertEquals(dir(self.conf.root), ['a'])
         self.assertEquals(dir(self.conf.root.a), ['b'])
+    def test__proxy_getitem(self):
+        self.assertEquals(self.conf.root["a"]["b"], self.conf.root.a.b)
     def test__pop(self):
         self.assertEquals(list(self.conf['a'].keys()), ['b'])
         self.conf['a'].pop('b')
