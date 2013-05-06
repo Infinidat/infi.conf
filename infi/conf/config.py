@@ -64,6 +64,16 @@ class Config(object):
         _set_state(self, self._backups.pop())
     def serialize_to_dict(self):
         return _get_state(self)
+    def update(self, cfg):
+        self._update(self._value, cfg)
+    def _update(self, dest, src):
+        for key, value in iteritems(src):
+            if key not in dest:
+                raise exceptions.CannotSetValue("Key {0} does not exist in destination {1!r}".format(key, dest))
+            if isinstance(value, dict):
+                self._update(dest[key], value)
+            else:
+                dest[key] = value
 
 class ConfigProxy(object):
     def __init__(self, conf):

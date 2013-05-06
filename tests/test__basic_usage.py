@@ -43,6 +43,12 @@ class BasicUsageTest(TestCase):
         self.conf['c'] = Config(2)
         self.assertEquals(self.conf.root.c, 2)
         self.assertEquals(self.conf['c'], 2)
+    def test__update_from_dict(self):
+        self.conf.update({"a" : {"b": 3}})
+        self.assertEquals(self.conf.root.a.b, 3)
+    def test__update_from_dict_unknown_paths(self):
+        with self.assertRaises(exceptions.CannotSetValue):
+            self.conf.update({"a" : {"b": 3, "c": 20}})
     def test__setting_new_substructure(self):
         self.conf['c'] = Config(dict(
             a=dict(
