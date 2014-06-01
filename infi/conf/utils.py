@@ -41,7 +41,7 @@ def get_path(conf, path):
     for p in path_components:
         key = returned.get(p, NOTHING)
         if key is NOTHING:
-            raise InvalidPath("Invalid path: {0!r}".format(path))
+            raise InvalidPath("Invalid config path: {0!r}".format(path))
         returned = returned[p]
     return returned
 
