@@ -90,6 +90,9 @@ class ConfigProxy(object):
         except exceptions.CannotSetValue:
             raise AttributeError(attr)
     def __getattr__(self, attr):
+        if attr not in self._conf:
+            raise AttributeError(attr)
+
         value = self._conf[attr]
         if isinstance(value, dict):
             value = Config(value)

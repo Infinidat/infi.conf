@@ -59,10 +59,12 @@ class BasicUsageTest(TestCase):
         self.conf.root.c.a.b = False
         self.assertFalse(self.conf.root.c.a.b)
     def test__item_not_found(self):
-        with self.assertRaises(LookupError):
+        with self.assertRaises(AttributeError):
             self.conf.root.a.c
     def test__keys(self):
         self.assertEquals(set(self.conf.keys()), set(['a']))
+    def test__hasattr(self):
+        self.assertFalse(hasattr(self.conf.root, "lolz"))
 
 
 class LinkedConfigurationTest(TestCase):
