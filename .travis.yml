@@ -1,9 +1,15 @@
 language: python
 python:
-  - 2.7
-  - 3.4
-  - 3.5
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+- 2.7
+- 3.4
+- 3.5
 install: python setup.py develop
-# command to run tests, e.g. python setup.py test
 script: nosetests -w tests
+deploy:
+  provider: pypi
+  user: vmalloc
+  password:
+    secure: KZYim0uLQ0uLxGwn4novKcmkCzovZyV6aK1QKzO0O8OW1Ef8xrKGDS3g9rETcJ4B6QjpJ0oTpRjiivS8rFwJf5wf9oNGM9HziYbKQWD4bB0SPyDeEeMpX0vyFdz8ZOkz0eeprcxQfU6MaZu97P2MkCxvJbVAbeOPBm/CyTWQNPQ=
+  on:
+    tags: true
+    repo: Infinidat/infi.conf
